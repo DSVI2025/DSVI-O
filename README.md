@@ -21,11 +21,6 @@ CHANGE_PATTERNS = {
 }
 ```
 
-
-  
-```
-
-
 ### 1. user_profiles.csv (User Basic Information)
 - user_id: Unique user identifier
 - age: Age
