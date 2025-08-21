@@ -1,2 +1,0 @@
-PatientID,Age,Gender,WBC(10^9/L),RBC(10^12/L),HGB(g/L),HCT(%),MCV(fL),MCH(pg),MCHC(g/L),PLT(10^9/L),LYM%(%),NEUT%(%),GLU(mmol/L),ALT(U/L),AST(U/L),TP(g/L),ALB(g/L),BUN(mmol/L),CREA(μmol/L),UA(μmol/L),TC(mmol/L),TG(mmol/L),HDL(mmol/L),LDL(mmol/L),CRP(mg/L),SBP(mmHg),DBP(mmHg),BMI(kg/m^2),SpO2(%),Temp(℃)
-134,69,Male,9.3,4.5,119,38.3,84.3,262.4,311.4,188,30.6,61.4,5.5,34,23,75.5,50.0,4.9,56,275,4.2,1.3,1.6,2.7,2.3,130,69,19.2,97,37.0

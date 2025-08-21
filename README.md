@@ -1,83 +1,104 @@
-# DSVI-O
-## Data Statistics
-- Data volume: 200
-- Individual types (20 for each type):
-    - Always normal
-    - Always abnormal
-    - Always warning
-    - Normal -> warning
-    - Warning -> normal
-    - Warning -> abnormal
-    - Normal -> warning -> abnormal
-    - Abnormal -> warning -> normal
-    - Normal -> warning -> normal
-    - Abnormal -> warning -> abnormal
 
-## Data Description
-### 1. user_profiles.csv
-- **Content**: Basic user information
-- **Fields**:
-  - user_id: User ID
-  - age: Age
-  - gender: Gender (Male/Female)
-  - height_cm: Height (cm)
-  - weight_kg: Weight (kg)
-  - BMI: Body Mass Index
-- **Note**: Each row corresponds to the basic attributes of a user.
+## Main Data Files and Field Descriptions
 
-### 2. user_groups.csv
-- **Content**: User grouping information
-- **Fields**:
-  - user_id: User ID
-  - abnormal_group: Abnormal group (e.g., heart rate abnormal, SpO2 abnormal, normal, etc.)
-  - individual_type: Individual type (e.g., always normal, always abnormal, normal to warning, etc.)
-- **Note**: Used for subsequent group analysis and anomaly detection.
+1. The current dataset includes 10 versions of data, with each version containing 10 users and 10 days of data per user.
+2. The same 10 users are consistent across different versions.
+3. Each user generates 10 days of data, with status changes occurring randomly. Each status lasts no more than 12 hours. Available status patterns:
 
-### 3. medical_records.csv
-- **Content**: User electronic medical records
-- **Fields**:
-  - user_id: User ID
-  - WBC, RBC, HGB, HCT, PLT, NEUT%, LYM%, GLU, CRP, ALT, AST, UA, CREA, BUN, TC, TG, HDL, LDL, SBP, DBP, TP, ALB, SpO2, Temp, BMI, etc.
-- **Note**: Each row corresponds to a user's medical examination results, including blood routine, metabolism, blood lipids, blood pressure, nutrition, and other indicators.
+```python
+# Pattern Types
+CHANGE_PATTERNS = {
+    'Always Healthy': {'from': 0, 'to': 0, 'type': 'linear'},
+    'Always Sick': {'from': 2, 'to': 2, 'type': 'linear'},
+    'Sudden Warning': {'from': 0, 'to': 1, 'type': 'sudden'},
+    'Linear Gradual Warning': {'from': 0, 'to': 1, 'type': 'linear'},
+    'Other Gradual Warning': {'from': 0, 'to': 1, 'type': 'exponential'},
+    'Sudden Recovery': {'from': 1, 'to': 0, 'type': 'sudden'},
+    'Linear Gradual Recovery': {'from': 1, 'to': 0, 'type': 'linear'},
+    'Other Gradual Recovery': {'from': 1, 'to': 0, 'type': 'exponential'},
+    'Sudden Warning to Sick': {'from': 1, 'to': 2, 'type': 'sudden'},
+    'Sudden Sick to Warning': {'from': 2, 'to': 1, 'type': 'sudden'},
+}
+```
 
-### 4. daily_physiology.csv
-- **Content**: User's daily physiological monitoring data
-- **Fields**:
-  - time: Timestamp (to the second)
-  - HR: Heart rate
-  - SpO2: Blood oxygen saturation
-  - step: Steps per 5 seconds
-  - step_cum: Cumulative steps
-  - calories: Calorie consumption
-  - activity: Activity type (e.g., sleep, active, leisure, etc.)
-  - weather: Weather
-  - status: Health status (0=normal, 1=warning, 2=abnormal)
-- **Note**: Each row records the user's physiological and activity status at a certain moment.
 
-### 5. insole_data.csv
-- **Content**: User's daily plantar pressure and gait data
-- **Fields**:
-  - time: Timestamp (to the second)
-  - LF, LH, RF, RH: Left front, left heel, right front, right heel plantar pressure
-  - step_freq: Step frequency
-  - gait_type: Gait type (e.g., normal, abnormal, fast walk, slow walk, rest)
-  - center_x, center_y: Plantar pressure center coordinates
-- **Note**: Each row records the user's plantar pressure and gait characteristics at a certain moment.
+  
+```
 
-### 6. medical_records_abnormal.csv
-- **Content**: User electronic medical records (including abnormal and warning states)
-- **Fields**:
-  - user_id: User ID
-  - Other medical indicators (same as medical_records.csv)
-  - status: Health status (0=normal, 1=warning, 2=abnormal)
-- **Note**:
-  - This file is an extension of medical_records.csv based on the individual_type and abnormal_group in user_groups.csv.
-  - When the user is in a "warning" or "abnormal" state, relevant medical indicators are adjusted according to the abnormal type. The "warning" amplitude is half of the "abnormal" amplitude.
-  - For example:
-    - Heart rate abnormal group:
-      - Warning: CRP +1, WBC +0.75, NEUT% +4, LYM% -4
-      - Abnormal: CRP +2, WBC +1.5, NEUT% +8, LYM% -8
-    - SpO2 abnormal group:
-      - Warning: SpO2 -1, RBC +0.15, HCT +0.015
-      - Abnormal: SpO2 -2, RBC +0.3, HCT +0.03
-  - Each user may have multiple records, corresponding to different health states.
+
+### 1. user_profiles.csv (User Basic Information)
+- user_id: Unique user identifier
+- age: Age
+- gender: Gender (Male/Female)
+- height_cm: Height (centimeters)
+- weight_kg: Weight (kilograms)
+- BMI: Body Mass Index
+
+### 2. medical_records.csv (Electronic Medical Records)
+- PatientID: Unique user identifier
+- Age: Age
+- Gender: Gender (Male/Female)
+- WBC(10^9/L): White Blood Cell count
+- RBC(10^12/L): Red Blood Cell count
+- HGB(g/L): Hemoglobin
+- HCT(%): Hematocrit
+- MCV(fL): Mean Corpuscular Volume
+- MCH(pg): Mean Corpuscular Hemoglobin
+- MCHC(g/L): Mean Corpuscular Hemoglobin Concentration
+- PLT(10^9/L): Platelet count
+- LYM%(%): Lymphocyte percentage
+- NEUT%(%): Neutrophil percentage
+- GLU(mmol/L): Glucose
+- ALT(U/L): Alanine Aminotransferase
+- AST(U/L): Aspartate Aminotransferase
+- TP(g/L): Total Protein
+- ALB(g/L): Albumin
+- BUN(mmol/L): Blood Urea Nitrogen
+- CREA(μmol/L): Creatinine
+- UA(μmol/L): Uric Acid
+- TC(mmol/L): Total Cholesterol
+- TG(mmol/L): Triglycerides
+- HDL(mmol/L): High-Density Lipoprotein
+- LDL(mmol/L): Low-Density Lipoprotein
+- CRP(mg/L): C-Reactive Protein
+- SBP(mmHg): Systolic Blood Pressure
+- DBP(mmHg): Diastolic Blood Pressure
+- BMI(kg/m^2): Body Mass Index
+- SpO2(%): Blood Oxygen Saturation
+- Temp(℃): Body Temperature
+
+### 4. Health Data (health_data.csv)
+- time: Timestamp (format: YYYY-MM-DD HH:MM:SS)
+- heart_rate: Heart rate (beats/minute)
+- spo2: Blood oxygen saturation (%)
+- sleep_quality: Sleep quality (0: awake, 1: light sleep, 2: deep sleep)
+- steps: Cumulative step count (steps)
+- calories: Cumulative calories burned (kcal)
+- skin_temperature: Skin temperature (℃)
+- hrv: Heart rate variability (ms)
+- stress_index: Stress index (dimensionless)
+- sbp: Systolic blood pressure (mmHg)
+- dbp: Diastolic blood pressure (mmHg)
+- activity_intensity: Activity intensity (dimensionless)
+- active_minutes: Cumulative active minutes (minutes)
+- floors_climbed: Cumulative floors climbed (floors)
+- activity: Current activity type (such as sleep, activity, leisure, etc.)
+- status: Health status (0: normal, 1: abnormal, 2: sick, or continuous values)
+
+### 5. Electronic Insole Data (insole_data.csv)
+- time: Timestamp (format: YYYY-MM-DD HH:MM:SS)
+- LF: Left forefoot pressure (kg)
+- LH: Left hindfoot pressure (kg)
+- RF: Right forefoot pressure (kg)
+- RH: Right hindfoot pressure (kg)
+- step_freq: Step frequency (steps/minute)
+- stride_length: Stride length (meters)
+- contact_time: Ground contact time (milliseconds)
+- symmetry: Gait symmetry (%)
+- gait_type: Gait type (such as "normal", "abnormal", etc.)
+- motion_type: Motion type (such as "stationary", "walking", etc.)
+- force_estimate: Plantar pressure estimate (N)
+- balance_score: Balance score (0-100)
+- lr_ratio: Left-right foot pressure ratio (0-1)
+- center_x: Lateral center of pressure offset (mm)
+- center_y: Longitudinal center of pressure offset (mm)  
