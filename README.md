@@ -1,116 +1,84 @@
 # DSVI-O
 
-This repository contains the data-generation and experiment code used for the
-DSVI-O Section 6 reproducibility study. It provides a self-contained pipeline
-for generating the synthetic source and target cohorts, converting them to the
-MAT layout used by the experiments, and running experiments S6-E1 through
-S6-E7.
+This repository provides computational materials for differential stochastic
+variational inequalities with parametric optimization (DSVI-O) and their
+extension to history-dependent response transfer.
 
-Generated datasets and experiment outputs are intentionally not committed to
-Git. The scripts create them under `data/` and `results/` by default.
+## Mathematical scope
 
-## Experiment suite
+DSVI-O describes a class of dynamic stochastic systems in which a continuously
+evolving upper-level state is coupled with the solution of a lower-level
+parametric optimization problem. The lower-level solution acts as an endogenous
+response in the state dynamics, allowing equilibrium and optimization
+constraints to enter a stochastic dynamical model.
 
-| ID | Experiment | Entry point |
-| --- | --- | --- |
-| S6-E0 | Source/target cohort generation | `scripts/generate_section6_data.sh` |
-| S6-E1 | Source-domain held-out benchmark | `scripts/run_s6_e1_source_domain.sh` |
-| S6-E2 | Target-domain full-recomputation baseline | `scripts/run_s6_e2_target_full_recomputation.sh` |
-| S6-E2a | Target response-density ablation | `scripts/run_s6_e2_target_response_density.sh` |
-| S6-E3 | Sensor-noise robustness | `scripts/run_s6_e3_noise_robustness.sh` |
-| S6-E4 | Source-target similarity | `scripts/run_s6_e4_source_target_similarity.sh` |
-| S6-E5 | Similarity-weighted Top-K transfer | `scripts/run_s6_e5_similarity_weighted_topk.sh` |
-| S6-E6 | Transfer-method latency comparison | `scripts/run_s6_e6_transfer_latency.sh` |
-| S6-E7 | Delayed response reuse | `scripts/run_s6_e7_delayed_response_reuse.sh` |
+The history-dependent extension replaces the instantaneous lower-level
+response by a response map defined on the stopped history of the exogenous
+process. The resulting formulation couples a projected differential system
+with history-dependent stochastic variational inequalities. Its analysis
+concerns well-posedness of the closed-loop system, sample average approximation,
+and stability with respect to the initial state and the probability law of the
+stochastic environment.
 
-See [EXPERIMENTS.md](EXPERIMENTS.md) for the complete experiment and data
-inventory, and [REPRODUCING.md](REPRODUCING.md) for inputs, outputs, defaults,
-and runtime overrides. A standalone mathematical description of the mixed-noise
-construction used in S6-E3 is available in
-[Mixed-noise definition](docs/mixed_noise_definition.pdf).
+The transfer-learning setting considers related source and target
+environments. Response trajectories constructed in the source domain are
+transferred to the target domain through a similarity-weighted multi-source
+rule, while target observations remain in the upper-level state update. This
+separates transfer of the lower-level response from direct substitution of the
+target trajectory.
 
-## Requirements
+## Related work
 
-- Python 3.9 or newer
-- Bash
-- CUDA-capable PyTorch is recommended for the full experiment suite; CPU runs
-  are supported but substantially slower
+1. X. Chen, J. Guo, and G. Wang, **“Differential Stochastic Variational
+   Inequalities with Parametric Optimization,”** 2025.
+   [[arXiv](https://arxiv.org/abs/2508.15241)]
+   [[PDF](https://arxiv.org/pdf/2508.15241)]
 
-Create an isolated environment and install the Python dependencies:
+2. **“Transfer Learning in Differential Stochastic Variational Inequalities
+   with History-Dependent Responses.”**
 
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install --upgrade pip
-python -m pip install -r requirements.txt
-```
+## Elderly-health application
 
-PyTorch installation differs by platform. If the default package does not
-match your CUDA runtime, install the appropriate build from the official
-PyTorch package index before running the experiments.
+The accompanying application concerns an elderly-health embodied-intelligence
+system with synthetic multimodal observations. Each individual is represented
+by smartwatch signals, intelligent-insole measurements, electronic medical
+record features, and a time-dependent health state. Observations are generated
+at five-second resolution over 100 days per individual.
 
-## Quick start
+The source and target cohorts contain ten users each and are generated under
+related demographic, health, and living-environment conditions. They remain
+disjoint at the level of user trajectories, health-state labels, and
+precomputed response trajectories. This construction supports the study of
+stability under sensor perturbations and transfer of history-dependent
+responses across related individuals.
 
-Run a reduced data-generation smoke test:
+## Repository contents
 
-```bash
-NUM_VERSIONS=1 \
-NUM_USERS=1 \
-PROCESSES=1 \
-SOURCE_OUTPUT_ROOT=data/smoke/source \
-TARGET_OUTPUT_ROOT=data/smoke/target \
-scripts/generate_section6_data.sh
-```
+The repository includes:
 
-Generate the complete source and target cohorts with the manuscript defaults:
+- generators for the synthetic multimodal source and target cohorts;
+- numerical implementations of the source- and target-domain DSVI systems;
+- constructions for sensor perturbations and response-update sparsification;
+- source-target similarity and similarity-weighted response transfer methods;
+- delayed response-reuse and computational-cost analyses; and
+- supplementary mathematical and implementation documentation.
 
-```bash
-scripts/generate_section6_data.sh
-```
+The source code is organized by computational component under `src/`, with
+corresponding command-line entry points under `scripts/`. A detailed inventory
+is provided in [EXPERIMENTS.md](EXPERIMENTS.md). Environment requirements,
+input/output conventions, and execution details are collected separately in
+[REPRODUCING.md](REPRODUCING.md).
 
-Then run experiments individually, for example:
+The mathematical construction of the mixed sensor perturbation used in the
+robustness study is documented in
+[mixed_noise_definition.pdf](docs/mixed_noise_definition.pdf).
 
-```bash
-DEVICE=cuda scripts/run_s6_e1_source_domain.sh
-DEVICE=cuda scripts/run_s6_e2_target_full_recomputation.sh
-DEVICE=cuda scripts/run_s6_e3_noise_robustness.sh
-```
+Generated datasets and numerical outputs are intentionally excluded from the
+repository. By default, they are written to `data/` and `results/`,
+respectively.
 
-To run the complete pipeline from data generation through S6-E7:
+## Software
 
-```bash
-DEVICE=cuda scripts/run_section6_all.sh
-```
-
-`run_section6_all.sh` defaults to `CLEAN=1`, which removes the repository's
-generated `data/` and `results/` directories before starting. Set `CLEAN=0` to
-retain existing artifacts.
-
-All runners accept environment-variable overrides for data paths, output
-paths, devices, batching, and experiment-specific settings. These options are
-documented in [REPRODUCING.md](REPRODUCING.md).
-
-## Repository layout
-
-```text
-.
-├── scripts/           # Data-generation and experiment launchers
-├── src/               # Python implementation grouped by experiment
-├── docs/              # Supplementary experiment documentation
-├── EXPERIMENTS.md     # Section 6 experiment/data registry
-├── REPRODUCING.md     # Detailed execution guide
-└── requirements.txt   # Python dependencies
-```
-
-## Reproducibility checks
-
-The source tree can be checked without generating data:
-
-```bash
-python -m compileall -q src
-for script in scripts/*.sh; do bash -n "$script"; done
-```
-
-The full suite is computationally and storage intensive: the default data
-configuration creates 10 versions for each of 20 users, with 10 days per
-version sampled every five seconds.
+The implementation requires Python 3.9 or newer and the packages listed in
+`requirements.txt`. CUDA-capable PyTorch is recommended for the full numerical
+study; CPU execution is supported but substantially slower.
