@@ -1,16 +1,38 @@
 # DSVI-O
 
-DSVI-O is a computational framework for dynamic stochastic systems in which an
-upper-level state evolves continuously while a lower-level stochastic
-variational inequality or optimization problem produces feedback responses.
-The framework is motivated by systems whose decisions depend on time-varying
-random inputs, equilibrium constraints, and historical observations.
+DSVI-O refers to differential stochastic variational inequalities with
+parametric optimization. The framework describes dynamic stochastic systems in
+which an upper-level state evolves continuously while a lower-level parametric
+optimization problem produces feedback responses. It is motivated by systems
+whose decisions depend on time-varying random inputs and equilibrium or
+optimization constraints.
 
-This repository accompanies the manuscript **“Transfer Learning in
-Differential Stochastic Variational Inequalities with History-Dependent
-Responses.”** The paper extends the DSVI-O elderly-health benchmark to study
-history-dependent response trajectories and their transfer across related
-stochastic environments.
+This repository connects the original DSVI-O work with an ongoing extension to
+history-dependent response transfer. It contains the elderly-health data
+generator associated with the published DSVI-O study and the computational
+code for the transfer-learning manuscript currently under review.
+
+## Related papers
+
+### Published DSVI-O work
+
+X. Chen, J. Guo, and G. Wang, **“Differential Stochastic Variational
+Inequalities with Parametric Optimization,”** arXiv:2508.15241, 2025.
+[[arXiv](https://arxiv.org/abs/2508.15241)]
+[[PDF](https://arxiv.org/pdf/2508.15241)]
+
+This work introduces the DSVI-O formulation and the original synthetic
+elderly-health benchmark used by the source cohort in this repository.
+
+### Transfer-learning manuscript
+
+**“Transfer Learning in Differential Stochastic Variational Inequalities with
+History-Dependent Responses.”** This manuscript is currently under review.
+
+The manuscript extends the DSVI-O benchmark by making the second-stage response
+history-dependent and studying robustness and response transfer between
+related source and target users. The Section 6 computational materials for this
+manuscript are provided in this repository.
 
 ## Research overview
 
