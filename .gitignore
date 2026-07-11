@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.Python
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+build/
+dist/
+*.egg-info/
+
+# Generated datasets and experiment artifacts
+/data/
+/results/
+/results_*/
+*.mat
+*.npy
+*.npz
+*.log
+
+# Plotting/tool caches
+/.mplconfig/
+
+# Editors and operating systems
+.DS_Store
+.idea/
+.vscode/
+*~
