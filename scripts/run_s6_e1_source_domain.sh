@@ -36,7 +36,7 @@ fi
 if [[ ! -f "${DATA_DIR}/healthData.mat" || ! -f "${DATA_DIR}/insoleData.mat" || ! -f "${DATA_DIR}/EMRData.mat" ]]; then
   echo "Missing S6-E1 MAT input files under DATA_DIR=${DATA_DIR}" >&2
   echo "Expected: healthData.mat, insoleData.mat, EMRData.mat" >&2
-  echo "Set DATA_DIR to an existing MAT directory or set SOURCE_DATA_ROOT to generated source CSV data." >&2
+  echo "Set DATA_DIR to an existing MAT directory or set SOURCE_DATA_ROOT to the committed source CSV data." >&2
   exit 1
 fi
 
