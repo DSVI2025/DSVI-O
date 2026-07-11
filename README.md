@@ -1,14 +1,31 @@
 # DSVI-O
 
-DSVI-O refers to differential stochastic variational inequalities with
-parametric optimization. The framework describes dynamic stochastic systems in
-which an upper-level state evolves continuously while a lower-level parametric
-optimization problem produces feedback responses. It is motivated by systems
-whose decisions depend on time-varying random inputs and equilibrium or
-optimization constraints.
+This repository provides computational materials for differential stochastic
+variational inequalities with parametric optimization (DSVI-O) and their
+extension to history-dependent response transfer.
 
-This repository contains computational materials associated with two related
-works on DSVI-O and history-dependent response transfer.
+## Mathematical scope
+
+DSVI-O describes a class of dynamic stochastic systems in which a continuously
+evolving upper-level state is coupled with the solution of a lower-level
+parametric optimization problem. The lower-level solution acts as an endogenous
+response in the state dynamics, allowing equilibrium and optimization
+constraints to enter a stochastic dynamical model.
+
+The history-dependent extension replaces the instantaneous lower-level
+response by a response map defined on the stopped history of the exogenous
+process. The resulting formulation couples a projected differential system
+with history-dependent stochastic variational inequalities. Its analysis
+concerns well-posedness of the closed-loop system, sample average approximation,
+and stability with respect to the initial state and the probability law of the
+stochastic environment.
+
+The transfer-learning setting considers related source and target
+environments. Response trajectories constructed in the source domain are
+transferred to the target domain through a similarity-weighted multi-source
+rule, while target observations remain in the upper-level state update. This
+separates transfer of the lower-level response from direct substitution of the
+target trajectory.
 
 ## Related work
 
@@ -20,89 +37,48 @@ works on DSVI-O and history-dependent response transfer.
 2. **“Transfer Learning in Differential Stochastic Variational Inequalities
    with History-Dependent Responses.”**
 
-## Research overview
+## Elderly-health application
 
-The history-dependent DSVI model couples two components:
+The accompanying application concerns an elderly-health embodied-intelligence
+system with synthetic multimodal observations. Each individual is represented
+by smartwatch signals, intelligent-insole measurements, electronic medical
+record features, and a time-dependent health state. Observations are generated
+at five-second resolution over 100 days per individual.
 
-- an upper-level projected differential system for the evolving state; and
-- a lower-level stochastic variational inequality, represented in the
-  application by an optimization problem, whose response depends on the
-  stopped history of the stochastic process.
+The source and target cohorts contain ten users each and are generated under
+related demographic, health, and living-environment conditions. They remain
+disjoint at the level of user trajectories, health-state labels, and
+precomputed response trajectories. This construction supports the study of
+stability under sensor perturbations and transfer of history-dependent
+responses across related individuals.
 
-The associated paper studies well-posedness, sample average approximation, and
-stability under changes in the initial state and the law of the exogenous
-process. Its computational study uses an elderly-health embodied-intelligence
-benchmark to examine two practical questions:
+## Repository contents
 
-1. How robust is the predicted health-state trajectory to perturbations in
-   wearable and clinical sensor streams?
-2. Can precomputed response trajectories be transferred from source users to
-   related target users without recomputing the target response online?
+The repository includes:
 
-## Elderly-health benchmark
+- generators for the synthetic multimodal source and target cohorts;
+- numerical implementations of the source- and target-domain DSVI systems;
+- constructions for sensor perturbations and response-update sparsification;
+- source-target similarity and similarity-weighted response transfer methods;
+- delayed response-reuse and computational-cost analyses; and
+- supplementary mathematical and implementation documentation.
 
-The benchmark contains synthetic multimodal records for source and target
-cohorts. Each user has 100 days of observations sampled every five seconds,
-with three data modalities:
+The source code is organized by computational component under `src/`, with
+corresponding command-line entry points under `scripts/`. A detailed inventory
+is provided in [EXPERIMENTS.md](EXPERIMENTS.md). Environment requirements,
+input/output conventions, and execution details are collected separately in
+[REPRODUCING.md](REPRODUCING.md).
 
-- smartwatch physiological and activity signals;
-- intelligent-insole measurements; and
-- electronic medical record features.
+The mathematical construction of the mixed sensor perturbation used in the
+robustness study is documented in
+[mixed_noise_definition.pdf](docs/mixed_noise_definition.pdf).
 
-The source cohort contains ten users from the DSVI-O benchmark. The transfer
-study generates a separate ten-user target cohort under related demographic,
-health, and living-environment conditions. Source and target users do not share
-trajectories, health-state labels, or precomputed response trajectories.
+Generated datasets and numerical outputs are intentionally excluded from the
+repository. By default, they are written to `data/` and `results/`,
+respectively.
 
-Generated datasets and experiment outputs are not committed to Git. The code
-creates them under `data/` and `results/`.
+## Software
 
-## Code and experiments
-
-The repository contains the data generators and the computational experiments
-from the manuscript’s elderly-health application.
-
-| ID | Study | Main entry point |
-| --- | --- | --- |
-| S6-E0 | Generate independent source and target cohorts | `scripts/generate_section6_data.sh` |
-| S6-E1 | Evaluate source-domain held-out performance | `scripts/run_s6_e1_source_domain.sh` |
-| S6-E2 | Compute the target-domain full-response reference | `scripts/run_s6_e2_target_full_recomputation.sh` |
-| S6-E2a | Study sparse target-response updates | `scripts/run_s6_e2_target_response_density.sh` |
-| S6-E3 | Evaluate robustness under sensor perturbations | `scripts/run_s6_e3_noise_robustness.sh` |
-| S6-E4 | Measure source-target user similarity | `scripts/run_s6_e4_source_target_similarity.sh` |
-| S6-E5 | Evaluate nearest-source and similarity-weighted transfer | `scripts/run_s6_e5_similarity_weighted_topk.sh` |
-| S6-E6 | Compare online latency across transfer methods | `scripts/run_s6_e6_transfer_latency.sh` |
-| S6-E7 | Study delayed reuse of transferred responses | `scripts/run_s6_e7_delayed_response_reuse.sh` |
-
-The main transfer method ranks source users by multimodal historical
-similarity, combines the response trajectories of the top-K source users, and
-uses the weighted response in the target user’s online state update. The target
-observations remain active in every update; only the second-stage response is
-transferred or reused.
-
-## Documentation
-
-- [Experiment and data inventory](EXPERIMENTS.md)
-- [Execution details](REPRODUCING.md)
-- [Mathematical definition of the mixed-noise construction](docs/mixed_noise_definition.pdf)
-
-## Repository layout
-
-```text
-.
-├── scripts/           # Data-generation and experiment launchers
-├── src/               # Implementations grouped by experiment
-├── docs/              # Supplementary mathematical documentation
-├── EXPERIMENTS.md     # Experiment and data registry
-├── REPRODUCING.md     # Environment and execution details
-└── requirements.txt   # Python dependencies
-```
-
-## Software requirements
-
-The implementation requires Python 3.9 or newer, Bash, and the packages listed
-in `requirements.txt`. CUDA-capable PyTorch is recommended for the full
-experiment suite; CPU execution is supported but substantially slower.
-
-For detailed commands, input/output conventions, and runtime configuration,
-see [REPRODUCING.md](REPRODUCING.md).
+The implementation requires Python 3.9 or newer and the packages listed in
+`requirements.txt`. CUDA-capable PyTorch is recommended for the full numerical
+study; CPU execution is supported but substantially slower.
