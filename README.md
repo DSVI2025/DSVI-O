@@ -4,8 +4,6 @@ This repository provides computational materials for differential stochastic
 variational inequalities with parametric optimization (DSVI-O) and their
 extension to history-dependent response transfer.
 
-## Mathematical scope
-
 DSVI-O describes a class of dynamic stochastic systems in which a continuously
 evolving upper-level state is coupled with the solution of a lower-level
 parametric optimization problem. The lower-level solution acts as an endogenous
