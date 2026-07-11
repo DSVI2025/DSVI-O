@@ -54,7 +54,7 @@ responses across related individuals.
 
 The repository includes:
 
-- generators for the synthetic multimodal source and target cohorts;
+- the synthetic multimodal source and target cohorts used in the study;
 - numerical implementations of the source- and target-domain DSVI systems;
 - constructions for sensor perturbations and response-update sparsification;
 - source-target similarity and similarity-weighted response transfer methods;
@@ -71,9 +71,10 @@ The mathematical construction of the mixed sensor perturbation used in the
 robustness study is documented in
 [mixed_noise_definition.pdf](docs/mixed_noise_definition.pdf).
 
-Generated datasets and numerical outputs are intentionally excluded from the
-repository. By default, they are written to `data/` and `results/`,
-respectively.
+The source and target CSV cohorts are versioned under `data/source/` and
+`data/target/`. Large time-series files are stored with Git LFS. Derived MAT
+files and numerical outputs are excluded and are written to `data/mat/` and
+`results/`, respectively.
 
 ## Software
 

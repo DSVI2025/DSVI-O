@@ -1,43 +1,27 @@
 # Reproducing the Section 6 Experiments
 
-This document describes the self-contained data generation and experiment
-workflows used to reproduce the Section 6 evaluation. Run all commands from the
-repository root.
+This document describes the computational workflows used for the Section 6
+evaluation. Run all commands from the repository root.
 
-## Scripts
+## Data
 
-Run from the repository root:
+The source and target CSV cohorts are committed under:
 
-```bash
-scripts/generate_source_data.sh
-scripts/generate_target_data.sh
-scripts/generate_section6_data.sh
+```text
+data/source
+data/target
 ```
 
-Default outputs:
-
-- Source cohort: `data/source`
-- Target cohort: `data/target`
-
-Default Section 6 settings:
+The committed data use the following configuration:
 
 - `NUM_VERSIONS=10`
 - `NUM_USERS=10`
 - source user IDs: `1-10`
 - target user IDs: `11-20`
-- source profile seed: `53`
-- target profile seed: `73`
-- time-series base seed: version index, e.g. `v1 -> 1`
-- each version/user generates 10 days of 5-second data, `172800` rows per time-series file
+- each version/user contains 10 days of 5-second data, `172800` rows per time-series file
 
-Set environment variables to override defaults:
-
-```bash
-NUM_VERSIONS=1 NUM_USERS=2 PROCESSES=1 OVERWRITE=1 scripts/generate_section6_data.sh
-```
-
-Core Python dependencies are `numpy` and `pandas`. `matplotlib` is only needed
-when plotting functions are used.
+Large health and insole CSV files are managed with Git LFS. Run `git lfs pull`
+after cloning if the LFS objects were not downloaded automatically.
 
 ## S6-E1 Source-Domain Experiment
 
@@ -212,7 +196,7 @@ data/mat/source_target_shared_emr
 
 By default, `TARGET_EMR_MODE=source_shared`, matching the shared-EMR MAT layout
 used by the paper-similarity transfer runs. If the MAT files are missing, the
-run script converts the generated source and target CSV cohorts and merges them
+run script converts the committed source and target CSV cohorts and merges them
 before computing similarity.
 
 Default settings match manuscript Section 6.3.1:

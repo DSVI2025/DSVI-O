@@ -14,8 +14,8 @@ build/
 dist/
 *.egg-info/
 
-# Generated datasets and experiment artifacts
-/data/
+# Derived experiment artifacts
+/data/mat/
 /results/
 /results_*/
 *.mat

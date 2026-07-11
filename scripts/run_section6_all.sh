@@ -11,7 +11,7 @@ mkdir -p "${MPLCONFIGDIR}"
 
 if [[ "${CLEAN:-1}" == "1" ]]; then
   rm -rf \
-    "${STABLE_DIR}/data" \
+    "${STABLE_DIR}/data/mat" \
     "${STABLE_DIR}/results" \
     "${STABLE_DIR}/.mplconfig"
   mkdir -p "${MPLCONFIGDIR}"
@@ -28,9 +28,6 @@ export HISTORY_CHUNK_SIZE="${HISTORY_CHUNK_SIZE:-1024}"
 export PROGRESS_INTERVAL="${PROGRESS_INTERVAL:-0}"
 export SIMILARITY_CHUNK_SIZE="${SIMILARITY_CHUNK_SIZE:-256}"
 export MAKE_PLOTS="${MAKE_PLOTS:-1}"
-
-echo "[section6] S6-E0 data generation"
-"${STABLE_DIR}/scripts/generate_section6_data.sh"
 
 echo "[section6] S6-E1 source-domain benchmark"
 "${STABLE_DIR}/scripts/run_s6_e1_source_domain.sh"
