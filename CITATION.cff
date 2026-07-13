@@ -1,0 +1,37 @@
+cff-version: 1.2.0
+message: >-
+  If you use this dataset, please cite both the dataset and the associated
+  paper as specified below.
+type: dataset
+title: DSVI-O Source-Domain Synthetic Elderly-Health Dataset
+authors:
+  - family-names: Chen
+    given-names: Xiaojun
+  - family-names: Guo
+    given-names: Jian
+  - family-names: Wang
+    given-names: Guan
+version: 1.0.0
+date-released: 2026-07-13
+url: https://github.com/DSVI2025/DSVI-O
+license: CC-BY-4.0
+keywords:
+  - differential stochastic variational inequality
+  - synthetic health data
+  - elderly health
+  - smartwatch
+  - intelligent insole
+  - electronic medical records
+preferred-citation:
+  type: article
+  title: Differential Stochastic Variational Inequalities with Parametric Optimization
+  authors:
+    - family-names: Chen
+      given-names: Xiaojun
+    - family-names: Guo
+      given-names: Jian
+    - family-names: Wang
+      given-names: Guan
+  year: 2025
+  doi: 10.48550/arXiv.2508.15241
+  url: https://arxiv.org/abs/2508.15241
