@@ -22,8 +22,7 @@ retrieve the complete dataset with:
 git lfs pull
 ```
 
-This repository contains the original data and its documentation only. It does
-not include experimental implementations or data-generation scripts.
+This repository contains the DSVI-O Dataset and its accompanying documentation.
 
 ## Citation
 
