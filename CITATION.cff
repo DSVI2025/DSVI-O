@@ -3,7 +3,7 @@ message: >-
   If you use this dataset, please cite both the dataset and the associated
   paper as specified below.
 type: dataset
-title: DSVI-O Source-Domain Synthetic Elderly-Health Dataset
+title: DSVI-O Dataset
 authors:
   - family-names: Chen
     given-names: Xiaojun
