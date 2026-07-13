@@ -25,3 +25,17 @@ git lfs pull
 This repository contains the original source-domain data and its documentation
 only. It does not include target-domain data, experimental implementations, or
 data-generation scripts.
+
+## Citation
+
+If you use this dataset, please cite the dataset and the associated paper using
+the metadata in [`CITATION.cff`](CITATION.cff). The preferred paper citation is:
+
+> X. Chen, J. Guo, and G. Wang, “Differential Stochastic Variational
+> Inequalities with Parametric Optimization,” 2025,
+> [https://doi.org/10.48550/arXiv.2508.15241](https://doi.org/10.48550/arXiv.2508.15241).
+
+## License
+
+The dataset and accompanying documentation are licensed under the
+[Creative Commons Attribution 4.0 International License](LICENSE).
