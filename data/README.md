@@ -1,11 +1,11 @@
-# Source-domain dataset
+# DSVI-O Dataset
 
-The source-domain cohort contains synthetic multimodal elderly-health records
-for users 1--10. The data are organized into ten versions (`v1`--`v10`). Each
-version contains ten days per user, sampled every five seconds, with 17,280
-time points per day. The version directories represent separate ten-day data
-realizations rather than one continuous calendar-time series; together they
-provide 100 day-level trajectories for each user.
+The dataset contains synthetic multimodal elderly-health records for users
+1--10. The data are organized into ten versions (`v1`--`v10`). Each version
+contains ten days per user, sampled every five seconds, with 17,280 time points
+per day. The version directories represent separate ten-day data realizations
+rather than one continuous calendar-time series; together they provide 100
+day-level trajectories for each user.
 
 The dataset is fully synthetic. It contains no observations from real patients
 or identifiable individuals and is intended for methodological research on
@@ -16,7 +16,7 @@ dynamic stochastic systems and multimodal health-state modelling.
 Each version follows the same layout:
 
 ```text
-source/vN/generated_data/
+vN/generated_data/
 |-- user_profiles.csv
 |-- medical_records.csv
 |-- electronic_medical_records/

@@ -1,2 +1,2 @@
-data/source/**/health_data/*.csv filter=lfs diff=lfs merge=lfs -text
-data/source/**/insole_data/*.csv filter=lfs diff=lfs merge=lfs -text
+data/v*/generated_data/health_data/*.csv filter=lfs diff=lfs merge=lfs -text
+data/v*/generated_data/insole_data/*.csv filter=lfs diff=lfs merge=lfs -text
