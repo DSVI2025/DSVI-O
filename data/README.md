@@ -16,7 +16,7 @@ dynamic stochastic systems and multimodal health-state modelling.
 Each version follows the same layout:
 
 ```text
-vN/generated_data/
+data/vN/
 |-- user_profiles.csv
 |-- medical_records.csv
 |-- electronic_medical_records/
